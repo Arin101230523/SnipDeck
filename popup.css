@@ -1,0 +1,101 @@
+.container {
+    width: 300px;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+input, textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#snippet-list {
+    max-height: 220px;  /* Fixed height for scrolling */
+    overflow-y: auto;   /* Enable vertical scrolling when there are more than 4 snippets */
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+li {
+    margin: 5px 0;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+li:hover {
+    background-color: #e0e0e0;
+}
+
+.snippet-header {
+    display: flex;
+    justify-content: space-between;  /* Space between title and delete button */
+    align-items: center;             /* Vertically center items */
+}
+
+.snippet-header h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+    flex-grow: 1;  /* Ensures the title area takes up available space */
+}
+
+.snippet-header .delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #f44336;
+    padding: 0;
+    margin-left: 10px;  /* Small space between title and trash can */
+}
+
+.snippet-header .delete-button i {
+    font-size: 16px;    /* Size of the trash can icon */
+}
+
+.snippet-header .delete-button:hover {
+    color: #d32f2f;
+}
+
+.snippet-content {
+    display: none;
+    margin-top: 10px;
+}
+
+li.active .snippet-content {
+    display: block;
+}
+
+textarea.snippet-edit {
+    width: 100%;
+    margin-top: 10px;
+    padding: 5px;
+    display: none;
+}
+
+li.active textarea.snippet-edit {
+    display: block;
+}
