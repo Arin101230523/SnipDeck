@@ -31,9 +31,8 @@ button:hover {
 }
 
 #snippet-list {
-    max-height: 220px;  /* Fixed height for scrolling */
-    overflow-y: auto;   /* Enable vertical scrolling when there are more than 4 snippets */
-    padding: 0;
+    max-height: 220px;
+    overflow-y: auto;
     margin: 0;
     list-style-type: none;
 }
@@ -52,15 +51,15 @@ li:hover {
 
 .snippet-header {
     display: flex;
-    justify-content: space-between;  /* Space between title and delete button */
-    align-items: center;             /* Vertically center items */
+    justify-content: space-between; 
+    align-items: center;
 }
 
 .snippet-header h3 {
     margin: 0;
     font-size: 14px;
     font-weight: bold;
-    flex-grow: 1;  /* Ensures the title area takes up available space */
+    flex-grow: 1; 
 }
 
 .snippet-header .delete-button {
@@ -69,11 +68,11 @@ li:hover {
     cursor: pointer;
     color: #f44336;
     padding: 0;
-    margin-left: 10px;  /* Small space between title and trash can */
+    margin-left: 10px; 
 }
 
 .snippet-header .delete-button i {
-    font-size: 16px;    /* Size of the trash can icon */
+    font-size: 16px;
 }
 
 .snippet-header .delete-button:hover {

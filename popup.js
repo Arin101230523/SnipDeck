@@ -3,12 +3,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const titleInput = document.getElementById('title-input');
     const snippetInput = document.getElementById('snippet-input');
     const snippetList = document.getElementById('snippet-list');
+    const searchInput = document.getElementById('search-input');
 
     chrome.storage.local.get(['snippets'], function(result) {
         const snippets = result.snippets || [];
         snippets.forEach(snippet => addSnippetToDOM(snippet.title, snippet.text));
     });
-
 
     addSnippetButton.addEventListener('click', function() {
         const titleText = titleInput.value.trim();
@@ -21,6 +21,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    searchInput.addEventListener('input', function() {
+        const query = searchInput.value.toLowerCase();
+        const snippets = document.querySelectorAll('#snippet-list li');
+        snippets.forEach(snippet => {
+            const title = snippet.querySelector('h3').textContent.toLowerCase();
+            snippet.style.display = title.includes(query) ? 'block' : 'none';
+        });
+    });
 
     function addSnippetToDOM(title, text) {
         const li = document.createElement('li');
@@ -53,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
         li.appendChild(snippetContent);
         snippetList.appendChild(li);
 
-
         h3.addEventListener('click', function() {
             li.classList.toggle('active');
             if (li.classList.contains('active')) {
@@ -62,14 +69,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-
         editTextarea.addEventListener('blur', function() {
             const updatedText = editTextarea.value.trim();
             pre.textContent = updatedText;
             updateSnippet(title, updatedText);
         });
     }
-
 
     function saveSnippet(title, text) {
         chrome.storage.local.get(['snippets'], function(result) {
@@ -89,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
 
     function updateSnippet(title, newText) {
         chrome.storage.local.get(['snippets'], function(result) {
