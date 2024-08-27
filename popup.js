@@ -5,11 +5,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const snippetList = document.getElementById('snippet-list');
     const searchInput = document.getElementById('search-input');
 
+    // Load existing snippets
     chrome.storage.local.get(['snippets'], function(result) {
         const snippets = result.snippets || [];
         snippets.forEach(snippet => addSnippetToDOM(snippet.title, snippet.text));
     });
 
+    // Add new snippet
     addSnippetButton.addEventListener('click', function() {
         const titleText = titleInput.value.trim();
         const snippetText = snippetInput.value.trim();
@@ -21,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Search snippets
     searchInput.addEventListener('input', function() {
         const query = searchInput.value.toLowerCase();
         const snippets = document.querySelectorAll('#snippet-list li');
@@ -32,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function addSnippetToDOM(title, text) {
         const li = document.createElement('li');
+
         const headerContainer = document.createElement('div');
         headerContainer.className = 'header-container';
 
@@ -56,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             snippetList.removeChild(li);
             deleteSnippet(title, text);
         });
+        headerContainer.appendChild(deleteButton);
 
         li.appendChild(headerContainer);
 
@@ -71,28 +76,16 @@ document.addEventListener('DOMContentLoaded', function() {
         snippetContent.appendChild(editTextarea);
 
         li.appendChild(snippetContent);
-        li.appendChild(deleteButton);
         snippetList.appendChild(li);
 
         h3.addEventListener('click', function() {
             li.classList.toggle('active');
-            if (li.classList.contains('active')) {
-                editTextarea.style.display = 'block';
-                snippetContent.style.display = 'none';
-                editTextarea.value = pre.textContent;
-                editTextarea.focus();
-            } else {
-                editTextarea.style.display = 'none';
-                snippetContent.style.display = 'block';
-            }
         });
 
         editTextarea.addEventListener('blur', function() {
             const updatedText = editTextarea.value.trim();
             pre.textContent = updatedText;
             updateSnippet(title, updatedText);
-            editTextarea.style.display = 'none';
-            snippetContent.style.display = 'block';
         });
     }
 
