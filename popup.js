@@ -32,10 +32,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function addSnippetToDOM(title, text) {
         const li = document.createElement('li');
+        const headerContainer = document.createElement('div');
+        headerContainer.className = 'header-container';
 
         const h3 = document.createElement('h3');
         h3.textContent = title;
-        li.appendChild(h3);
+        headerContainer.appendChild(h3);
+
+        const copyButton = document.createElement('button');
+        copyButton.className = 'copy-button';
+        copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+        copyButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            copyToClipboard(text);
+        });
+        headerContainer.appendChild(copyButton);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-button';
+        deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+        deleteButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            snippetList.removeChild(li);
+            deleteSnippet(title, text);
+        });
+
+        li.appendChild(headerContainer);
 
         const snippetContent = document.createElement('div');
         snippetContent.className = 'snippet-content';
@@ -48,24 +70,20 @@ document.addEventListener('DOMContentLoaded', function() {
         editTextarea.value = text;
         snippetContent.appendChild(editTextarea);
 
-        const deleteButton = document.createElement('button');
-        deleteButton.className = 'delete-button';
-        deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-        deleteButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-            snippetList.removeChild(li);
-            deleteSnippet(title, text);
-        });
-
-        li.appendChild(deleteButton);
         li.appendChild(snippetContent);
+        li.appendChild(deleteButton);
         snippetList.appendChild(li);
 
         h3.addEventListener('click', function() {
             li.classList.toggle('active');
             if (li.classList.contains('active')) {
+                editTextarea.style.display = 'block';
+                snippetContent.style.display = 'none';
                 editTextarea.value = pre.textContent;
                 editTextarea.focus();
+            } else {
+                editTextarea.style.display = 'none';
+                snippetContent.style.display = 'block';
             }
         });
 
@@ -73,6 +91,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const updatedText = editTextarea.value.trim();
             pre.textContent = updatedText;
             updateSnippet(title, updatedText);
+            editTextarea.style.display = 'none';
+            snippetContent.style.display = 'block';
+        });
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(function() {
+            console.log('Snippet copied to clipboard!');
+        }, function(err) {
+            console.error('Could not copy text: ', err);
         });
     }
 

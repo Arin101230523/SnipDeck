@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Code Snippet Manager",
+    "name": "Quick Snippet",
     "description": "A simple Chrome extension to manage code snippets.",
     "version": "1.0",
     "action": {

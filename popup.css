@@ -1,7 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
 .container {
     width: 300px;
     padding: 10px;
-    font-family: Arial, sans-serif;
+    background-color: #ffffff;
 }
 
 h2 {
@@ -34,6 +46,7 @@ button:hover {
     max-height: 220px;
     overflow-y: auto;
     margin: 0;
+    padding: 0;
     list-style-type: none;
 }
 
@@ -51,7 +64,6 @@ li:hover {
 
 .snippet-header {
     display: flex;
-    justify-content: space-between; 
     align-items: center;
 }
 
@@ -59,23 +71,34 @@ li:hover {
     margin: 0;
     font-size: 14px;
     font-weight: bold;
-    flex-grow: 1; 
+    flex-grow: 1;
 }
 
-.snippet-header .delete-button {
+.snippet-header .operation-button {
     background: none;
     border: none;
     cursor: pointer;
+    padding: 4px 8px; /* Adjust padding for size */
+    font-size: 12px;  /* Adjust font size for icon */
+}
+
+.snippet-header .operation-button.copy-button {
+    color: #4CAF50;
+}
+
+.snippet-header .operation-button.delete-button {
     color: #f44336;
-    padding: 0;
-    margin-left: 10px; 
 }
 
-.snippet-header .delete-button i {
-    font-size: 16px;
+.snippet-header .operation-button i {
+    font-size: 12px; /* Adjust icon size */
 }
 
-.snippet-header .delete-button:hover {
+.snippet-header .operation-button.copy-button:hover {
+    color: #45a049;
+}
+
+.snippet-header .operation-button.delete-button:hover {
     color: #d32f2f;
 }
 
@@ -89,7 +112,7 @@ li.active .snippet-content {
 }
 
 textarea.snippet-edit {
-    width: 100%;
+    width: 50%;
     margin-top: 10px;
     padding: 5px;
     display: none;
