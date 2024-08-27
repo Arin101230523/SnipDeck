@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "Quick Snippet",
-    "description": "A simple Chrome extension to manage code snippets.",
+    "name": "SnipDeck",
+    "description": "A simple Chrome extension to manage snippets.",
     "version": "1.0",
     "action": {
       "default_popup": "popup.html",
