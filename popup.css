@@ -4,16 +4,18 @@ body {
     color: #2d2d2d;
     padding: 20px;
     margin: 0;
-  }
-  
-  #snippet-list {
+    min-width: 250px;
+}
+
+#snippet-list {
     list-style-type: none;
     padding: 0;
     margin: 0;
-  }
-  
-  li {
-    width: 200px;
+}
+
+li {
+    width: 100%;
+    max-width: 1000px;
     padding: 12px 16px;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -24,20 +26,21 @@ body {
     transition: background-color 0.2s ease, transform 0.2s ease;
     overflow-wrap: break-word;
     word-break: break-word;
-  }
-  
-  li:hover {
+    box-sizing: border-box;
+}
+
+li:hover {
     background-color: #f8f9fb;
     transform: translateY(-2px);
-  }
-  
-  .header-container {
+}
+
+.header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  
-  .header-container h3 {
+}
+
+.header-container h3 {
     margin: 0;
     font-size: 18px;
     font-weight: 500;
@@ -46,10 +49,10 @@ body {
     color: #333;
     overflow-wrap: break-word;
     word-break: break-word;
-  }
-  
-  .copy-button,
-  .delete-button {
+}
+
+.copy-button,
+.delete-button {
     background-color: #f4f4f4;
     border: 1px solid #ccc;
     cursor: pointer;
@@ -59,44 +62,88 @@ body {
     color: #555;
     border-radius: 4px;
     transition: background-color 0.2s ease, border-color 0.2s ease;
-  }
-  
-  .copy-button i,
-  .delete-button i {
+}
+
+.copy-button i,
+.delete-button i {
     color: #555;
-  }
-  
-  .copy-button:hover,
-  .delete-button:hover {
+}
+
+.copy-button:hover,
+.delete-button:hover {
     background-color: #e8e8e8;
     border-color: #bbb;
-  }
-  
-  .snippet-content,
-  .snippet-edit {
+}
+
+.snippet-content {
     display: none;
     margin-top: 12px;
     background-color: #f5f5f5;
-    padding: 12px;
+    padding: 4px;
     border-radius: 6px;
     border: 1px solid #e0e0e0;
-  }
-  
-  .active .snippet-content,
-  .active .snippet-edit {
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.snippet-edit {
+    display: none;
+    margin-top: 12px;
+    background-color: #f5f5f5;
+    padding: 4px;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    width: 100%;
+    max-width: 700px;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    resize: vertical, horizontal;
+    max-height: 300px;
+    overflow: auto;
+    min-height: 100px;
+    min-width: 125px;
+}
+
+.snippet-content pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0;
+}
+
+.active .snippet-content,
+.active .snippet-edit {
     display: block;
-  }
-  
-  .copy-popup {
+}
+
+.copy-popup {
     position: absolute;
-    top: 100%;
+    width: 50px;
     left: 0;
     transform: translateY(5px);
     background-color: #333;
     color: #fff;
-    padding: 8px 8px;
+    padding: 6px 6px;
     border-radius: 8px;
     font-size: 12px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     z-index: 1000;
-  }  
+}
+
+#snippet-input {
+    width: 250px;
+    max-width: 600px;
+    min-width: 175px;
+    height: 100px;
+    min-height: 100px;
+    max-height: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #2d2d2d;
+    background-color: #ffffff;
+}
