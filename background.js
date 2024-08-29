@@ -11,7 +11,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === '1' && info.selectionText) {
         chrome.storage.local.get(['selectedText'], (result) => {
             current = result.selectedText || '';
-            current += info.selectionText + '\n';
+            current += info.selectionText + '\n\n';
             chrome.storage.local.set({ selectedText: current });
         });
     }

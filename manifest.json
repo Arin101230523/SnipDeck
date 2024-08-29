@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "SnipDeck",
-  "description": "A simple Chrome extension to manage snippets.",
+  "description": "A simple Chrome extension to manage text snippets.",
   "version": "1.0", 
   "permissions": ["storage", "contextMenus", "activeTab"],
   "background": {
