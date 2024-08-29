@@ -1,15 +1,23 @@
 {
-    "manifest_version": 3,
-    "name": "SnipDeck",
-    "description": "A simple Chrome extension to manage snippets.",
-    "version": "1.0",
-    "action": {
-      "default_popup": "popup.html",
-      "default_icon": {
-        "16": "icon.png",
-        "48": "icon.png",
-        "128": "icon.png"
-      }
-    },
-    "permissions": ["storage"]
-  }  
+  "manifest_version": 3,
+  "name": "SnipDeck",
+  "description": "A simple Chrome extension to manage snippets.",
+  "version": "1.0", 
+  "permissions": ["storage", "contextMenus", "activeTab"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}
