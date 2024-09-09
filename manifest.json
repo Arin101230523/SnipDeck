@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "SnipDeck",
-  "description": "A simple Chrome extension to manage text snippets.",
-  "version": "1.0", 
+  "description": "A simple Chrome extension to manage text snippets. Now featuring text to speech!",
+  "version": "1.1,0", 
   "permissions": ["storage", "contextMenus", "activeTab"],
   "background": {
     "service_worker": "background.js"

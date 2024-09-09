@@ -4,15 +4,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const snippetInput = document.getElementById('snippet-input');
     const snippetList = document.getElementById('snippet-list');
     const searchInput = document.getElementById('search-input');
-
-
+    
     chrome.storage.local.get(['selectedText'], function(result) {
         if (result.selectedText) {
             snippetInput.value = result.selectedText;
             chrome.storage.local.remove('selectedText');
         }
     });
-
+    
     chrome.storage.local.get(['snippets'], function(result) {
         const snippets = result.snippets || [];
         snippets.forEach(snippet => addSnippetToDOM(snippet.title, snippet.text));
@@ -48,9 +47,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const li = document.createElement('li');
         const headerContainer = document.createElement('div');
         headerContainer.className = 'header-container';
+        
         const h3 = document.createElement('h3');
         h3.textContent = title;
         headerContainer.appendChild(h3);
+
+        const micButton = document.createElement('button');
+        micButton.className = 'microphone-button';
+        micButton.innerHTML = '<i class="fas fa-volume-high"></i>';
+        micButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const snippetText = pre.textContent.trim();
+            readSnippetAloud(snippetText);
+            showReadingPopup(this);
+        });
+        headerContainer.appendChild(micButton);
+
         const copyButton = document.createElement('button');
         copyButton.className = 'copy-button';
         copyButton.innerHTML = '<i class="fas fa-copy"></i>';
@@ -60,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
             showCopyPopup(this);
         });
         headerContainer.appendChild(copyButton);
+
         const deleteButton = document.createElement('button');
         deleteButton.className = 'delete-button';
         deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
@@ -69,24 +82,31 @@ document.addEventListener('DOMContentLoaded', function() {
             deleteSnippet(title, text);
         });
         headerContainer.appendChild(deleteButton);
+
         li.appendChild(headerContainer);
+
         const snippetContent = document.createElement('div');
         snippetContent.className = 'snippet-content';
         const pre = document.createElement('pre');
         pre.textContent = text;
         snippetContent.appendChild(pre);
+
         const editTextarea = document.createElement('textarea');
         editTextarea.className = 'snippet-edit';
         editTextarea.value = text;
         snippetContent.appendChild(editTextarea);
+
         li.appendChild(snippetContent);
         snippetList.appendChild(li);
+
         h3.addEventListener('click', function() {
             li.classList.toggle('active');
         });
+
+        // Update the snippet on blur (when editing is done)
         editTextarea.addEventListener('blur', function() {
             const updatedText = editTextarea.value.trim();
-            pre.textContent = updatedText;
+            pre.textContent = updatedText; // Update pre element with new text
             updateSnippet(title, updatedText);
         });
     }
@@ -108,6 +128,17 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             popup.remove();
         }, 400);
+    }
+
+    function showReadingPopup(button) {
+        const popup = document.createElement('div');
+        popup.className = 'reading-popup';
+        popup.textContent = 'Reading content...';
+        button.style.position = 'relative';
+        button.appendChild(popup);
+        setTimeout(() => {
+            popup.remove();
+        }, 700);
     }
 
     function saveSnippet(title, text) {
@@ -162,8 +193,15 @@ document.addEventListener('DOMContentLoaded', function() {
             alert.remove();
         }, 3000);
     }
+
+    function readSnippetAloud(text) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        window.speechSynthesis.speak(utterance);
+    }
 });
 
+//Tab is changed to three spaces
 document.addEventListener('DOMContentLoaded', () => {
     const editor = document.getElementById('snippet-input');
     editor.addEventListener('keydown', (event) => {

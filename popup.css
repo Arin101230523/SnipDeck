@@ -56,7 +56,7 @@ li:hover {
 }
 
 .copy-button,
-.delete-button {
+.delete-button, .microphone-button {
     background-color: #e0e7ff;
     border: 1px solid #a0aec0;
     cursor: pointer;
@@ -69,12 +69,12 @@ li:hover {
 }
 
 .copy-button i,
-.delete-button i {
+.delete-button i, .microphone-button i {
     color: #2d3748;
 }
 
 .copy-button:hover,
-.delete-button:hover {
+.delete-button:hover, .microphone-button:hover {
     background-color: #c3dafb;
     border-color: #2b6cb0;
     color: #1a202c;
@@ -122,7 +122,7 @@ li:hover {
     display: block;
 }
 
-.copy-popup {
+.copy-popup, .reading-popup {
     position: absolute;
     width: 50px;
     left: 0;

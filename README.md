@@ -27,6 +27,13 @@ SnipDeck is designed with a focus on user experience, featuring an intuitive UI 
 
 Get SnipDeck today and start transforming your text management process! Currently working on getting it on the Chrome Web Store.
 
+## 📝 Release Notes
+
+### Version 1.1.0
+
+- **Added Text-to-Speech Functionality**: You can now convert any snippet into speech with the new text-to-speech feature. Just click the volume icon next to a snippet to hear its content read aloud.
+- **Tab Override Enhancement**: Improved code editing experience by setting the tab key to insert three spaces, facilitating cleaner code formatting and easing your development workflow.
+
 ## 💬 Feedback and Support
 
-I’d love to hear from you! For any questions, feedback, or support, please reach out to arinsood2305@gmail.com.
+I’d love to hear from you! For any questions, feedback, or support, please reach out to [arinsood2305@gmail.com](mailto:arinsood2305@gmail.com).
