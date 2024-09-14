@@ -16,7 +16,7 @@
 
 1. **Install SnipDeck**: Add SnipDeck to your Chrome browser by cloning this repository, going to the extensions menu, turning on developer mode, and uploading all files.
 2. **Create Your First Snippet**: Click on the SnipDeck icon in the toolbar to open the extension and start creating your snippets.
-3. **Use the Context Menu**: Right-click on selected text and choose "Upload Selected to SnipDeck" to add it to your collection.
+3. **Use the Context Menu**: Right-click on the selected text and choose "Upload Selected to SnipDeck" to add it to your collection.
 4. **Manage Your Snippets**: Open the extension popup to view, search, edit, and delete your snippets as needed.
 
 ## 🎨 User Experience
