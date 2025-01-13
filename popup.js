@@ -1,22 +1,50 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Elements for snippets
     const addSnippetButton = document.getElementById('add-snippet');
     const titleInput = document.getElementById('title-input');
     const snippetInput = document.getElementById('snippet-input');
     const snippetList = document.getElementById('snippet-list');
     const searchInput = document.getElementById('search-input');
-    
+
+    // Elements for screenshots and tabs
+    const tabs = document.querySelectorAll('.tab');
+    const contentSections = document.querySelectorAll('.content-section');
+    const captureButton = document.getElementById('capture-screenshot');
+    const screenshotList = document.getElementById('screenshot-list');
+
+    // Tab switching functionality
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            contentSections.forEach(c => c.classList.remove('active'));
+            tab.classList.add('active');
+            document.querySelector(`.content-section[data-tab="${tab.dataset.tab}"]`).classList.add('active');
+        });
+    });
+
+    // Load selected text if available
     chrome.storage.local.get(['selectedText'], function(result) {
         if (result.selectedText) {
             snippetInput.value = result.selectedText;
             chrome.storage.local.remove('selectedText');
         }
     });
-    
+
+    // Load existing snippets
     chrome.storage.local.get(['snippets'], function(result) {
         const snippets = result.snippets || [];
         snippets.forEach(snippet => addSnippetToDOM(snippet.title, snippet.text));
     });
 
+    // Load existing screenshots
+    chrome.storage.local.get(['screenshots'], result => {
+        const screenshots = result.screenshots || [];
+        screenshots.forEach(screenshot => {
+            addScreenshotToDOM(screenshot.title, screenshot.thumbnailUrl, screenshot.dataUrl);
+        });
+    });
+
+    // Add snippet button click handler
     addSnippetButton.addEventListener('click', function() {
         const titleText = titleInput.value.trim();
         const snippetText = snippetInput.value.trim();
@@ -34,6 +62,57 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Screenshot capture functionality
+    captureButton.addEventListener('click', async () => {
+        try {
+            const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+            
+            chrome.tabs.captureVisibleTab(tab.windowId, { format: 'png', quality: 100 }, async (dataUrl) => {
+                if (chrome.runtime.lastError) {
+                    console.error('Screenshot failed:', chrome.runtime.lastError);
+                    showAlert('Failed to capture screenshot.');
+                    return;
+                }
+
+                // Create a temporary image to get dimensions
+                const img = new Image();
+                img.src = dataUrl;
+                await new Promise(resolve => img.onload = resolve);
+
+                // Create a canvas for resizing
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Calculate thumbnail dimensions (maintaining aspect ratio)
+                const aspectRatio = img.width / img.height;
+                const thumbWidth = 300;
+                const thumbHeight = thumbWidth / aspectRatio;
+                
+                canvas.width = thumbWidth;
+                canvas.height = thumbHeight;
+                
+                // Draw and resize the image
+                ctx.drawImage(img, 0, 0, thumbWidth, thumbHeight);
+                
+                // Convert to compressed thumbnail
+                const thumbnailDataUrl = canvas.toDataURL('image/png', 0.8);
+                
+                // Generate title with timestamp
+                const title = `Screenshot ${new Date().toLocaleString()}`;
+                
+                // Save both original and thumbnail
+                saveScreenshot(title, {
+                    original: dataUrl,
+                    thumbnail: thumbnailDataUrl
+                });
+            });
+        } catch (err) {
+            console.error('Error capturing screenshot:', err);
+            showAlert('Failed to capture screenshot.');
+        }
+    });
+
+    // Search functionality
     searchInput.addEventListener('input', function() {
         const query = searchInput.value.toLowerCase();
         const snippets = document.querySelectorAll('#snippet-list li');
@@ -43,6 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Snippet functions
     function addSnippetToDOM(title, text) {
         const li = document.createElement('li');
         const headerContainer = document.createElement('div');
@@ -100,22 +180,152 @@ document.addEventListener('DOMContentLoaded', function() {
         snippetList.appendChild(li);
 
         h3.addEventListener('click', function() {
-            li.classList.toggle('active');
+            li.classList.toggle('expanded');
         });
 
-        // Update the snippet on blur (when editing is done)
         editTextarea.addEventListener('blur', function() {
             const updatedText = editTextarea.value.trim();
-            pre.textContent = updatedText; // Update pre element with new text
+            pre.textContent = updatedText;
             updateSnippet(title, updatedText);
         });
     }
 
+    // Screenshot functions
+    function saveScreenshot(title, { original, thumbnail }) {
+        chrome.storage.local.get(['screenshots'], result => {
+            const screenshots = result.screenshots || [];
+            screenshots.push({ 
+                title, 
+                dataUrl: original,
+                thumbnailUrl: thumbnail,
+                timestamp: Date.now() 
+            });
+            chrome.storage.local.set({ screenshots }, () => {
+                addScreenshotToDOM(title, thumbnail, original);
+            });
+        });
+    }
+
+    function addScreenshotToDOM(title, thumbnailUrl, originalUrl) {
+        const li = document.createElement('li');
+        li.className = 'screenshot-item';
+        
+        const img = document.createElement('img');
+        img.className = 'screenshot-thumbnail';
+        img.src = thumbnailUrl;
+        img.alt = title;
+        
+        const titleElem = document.createElement('div');
+        titleElem.className = 'screenshot-title';
+        titleElem.textContent = title;
+        
+        const actions = document.createElement('div');
+        actions.className = 'screenshot-actions';
+        
+        const copyButton = document.createElement('button');
+        copyButton.className = 'copy-button';
+        copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+        copyButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            copyImageToClipboard(originalUrl).then(() => {
+                showCopyPopup(copyButton);
+            }).catch(err => {
+                console.error('Copy failed:', err);
+                showAlert('Failed to copy image to clipboard.');
+            });
+        });
+        
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-button';
+        deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+        deleteButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteScreenshot(title, originalUrl);
+            li.remove();
+        });
+        
+        actions.appendChild(copyButton);
+        actions.appendChild(deleteButton);
+        
+        li.appendChild(img);
+        li.appendChild(titleElem);
+        li.appendChild(actions);
+        
+        img.addEventListener('click', () => {
+            copyImageToClipboard(originalUrl).then(() => {
+                showCopyPopup(copyButton);
+            }).catch(err => {
+                console.error('Copy failed:', err);
+                showAlert('Failed to copy image to clipboard.');
+            });
+        });
+        
+        screenshotList.appendChild(li);
+    }
+
+    async function copyImageToClipboard(dataUrl) {
+        try {
+            // Convert data URL to Blob
+            const response = await fetch(dataUrl);
+            const blob = await response.blob();
+
+            // Create a new ClipboardItem
+            const clipboardItem = new ClipboardItem({
+                'image/png': blob
+            });
+
+            // Write to clipboard
+            await navigator.clipboard.write([clipboardItem]);
+            console.log('Image copied successfully');
+        } catch (err) {
+            console.error('Failed to copy image:', err);
+            
+            // Fallback method for copying image
+            try {
+                const img = document.createElement('img');
+                img.src = dataUrl;
+                document.body.appendChild(img);
+                
+                const range = document.createRange();
+                range.selectNode(img);
+                
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                
+                const successful = document.execCommand('copy');
+                if (!successful) {
+                    throw new Error('Copy command failed');
+                }
+                
+                document.body.removeChild(img);
+                console.log('Image copied using fallback method');
+            } catch (fallbackErr) {
+                console.error('Fallback copy failed:', fallbackErr);
+                showAlert('Failed to copy image to clipboard.');
+                throw fallbackErr;
+            }
+        }
+    }
+
+    function deleteScreenshot(title, dataUrl) {
+        chrome.storage.local.get(['screenshots'], result => {
+            const screenshots = result.screenshots || [];
+            const index = screenshots.findIndex(s => s.title === title && s.dataUrl === dataUrl);
+            if (index > -1) {
+                screenshots.splice(index, 1);
+                chrome.storage.local.set({ screenshots });
+            }
+        });
+    }
+
+    // Utility functions
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(function() {
-            console.log('Copied!');
+            console.log('Text copied successfully');
         }, function(err) {
             console.error('Could not copy text:', err);
+            showAlert('Failed to copy text to clipboard.');
         });
     }
 
@@ -199,19 +409,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const utterance = new SpeechSynthesisUtterance(text);
         window.speechSynthesis.speak(utterance);
     }
-});
 
-//Tab is changed to three spaces
-document.addEventListener('DOMContentLoaded', () => {
-    const editor = document.getElementById('snippet-input');
-    editor.addEventListener('keydown', (event) => {
+    // Tab handling
+    document.addEventListener('keydown', (event) => {
         if (event.key === 'Tab') {
             event.preventDefault();
-            const start = editor.selectionStart;
-            const end = editor.selectionEnd;
+            const start = snippetInput.selectionStart;
+            const end = snippetInput.selectionEnd;
             const tab = '   ';
-            editor.value = editor.value.substring(0, start) + tab + editor.value.substring(end);
-            editor.selectionStart = editor.selectionEnd = start + tab.length;
+            snippetInput.value = snippetInput.value.substring(0, start) + tab + snippetInput.value.substring(end);
+            snippetInput.selectionStart = snippetInput.selectionEnd = start + tab.length;
         }
     });
 });

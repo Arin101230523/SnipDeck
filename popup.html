@@ -9,13 +9,31 @@
 </head>
 <body>
     <div class="container">
-        <h2>SnipDeck</h2>
+        <h2>SnipDeck
+        <img src = 'icon.png' alt = 'icon' id = 'icon' width = '20' height = '20'>
+        </h2>
+        <div class="tabs">
+            <button class="tab active" data-tab="snippets">Text</button>
+            <button class="tab" data-tab="screenshots">Screenshots</button>
+        </div>
+
+        <div class="content-section active" data-tab="snippets">
         <input type="text" id="search-input" autocomplete = 'off' placeholder="Search snippets...">
         <input type="text" id="title-input" autocomplete = 'off' placeholder="Enter snippet title...">
         <textarea id="snippet-input" autcomplete = 'off' placeholder="Enter your snippet here..."></textarea>
         <button id="add-snippet">Add Snippet</button>
         <ul id="snippet-list">
         </ul>
+        </div>
+
+        <div class="content-section" data-tab="screenshots">
+            <button id="capture-screenshot">
+                <i class="fas fa-camera"></i>
+                Capture Screenshot
+            </button>
+            <ul id="screenshot-list"></ul>
+        </div>
+
     </div>
     <script src="popup.js"></script>
 </body>

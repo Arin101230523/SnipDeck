@@ -1,154 +1,271 @@
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f4f6f9;
-    color: #2d2d2d;
-    padding: 20px;
-    margin: 0;
-    min-width: 250px;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f6f9;
+  color: #2d2d2d;
+  padding: 20px;
+  margin: 0;
+  min-width: 250px;
 }
 
 #snippet-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 li {
-    width: 100%;
-    max-width: 1000px;
-    padding: 12px 16px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #ffffff, #f0f0f0);
-    margin-bottom: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    overflow-wrap: break-word;
-    word-break: break-word;
-    box-sizing: border-box;
+  width: 100%;
+  max-width: 1000px;
+  padding: 12px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ffffff, #f0f0f0);
+  margin-bottom: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  box-sizing: border-box;
 }
 
 li:hover {
-    background-color: #e8f0fe;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-color: #e8f0fe;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #e0e0e0;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e0e0e0;
+  margin-bottom: 10px;
 }
 
 .header-container h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 500;
-    flex-grow: 1;
-    padding-right: 12px;
-    color: #333;
-    overflow-wrap: break-word;
-    word-break: break-word;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  flex-grow: 1;
+  padding-right: 12px;
+  color: #333;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .copy-button,
 .delete-button, .microphone-button {
-    background-color: #e0e7ff;
-    border: 1px solid #a0aec0;
-    cursor: pointer;
-    margin-left: 8px;
-    padding: 6px 10px;
-    font-size: 14px;
-    color: #2d3748;
-    border-radius: 4px;
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  background-color: #e0e7ff;
+  border: 1px solid #a0aec0;
+  cursor: pointer;
+  margin-left: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+  color: #2d3748;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .copy-button i,
 .delete-button i, .microphone-button i {
-    color: #2d3748;
+  color: #2d3748;
 }
 
 .copy-button:hover,
 .delete-button:hover, .microphone-button:hover {
-    background-color: #c3dafb;
-    border-color: #2b6cb0;
-    color: #1a202c;
+  background-color: #c3dafb;
+  border-color: #2b6cb0;
+  color: #1a202c;
 }
 
 .snippet-content {
-    display: none;
-    margin-top: 12px;
-    background-color: #edf2f7;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #e0e0e0;
-    box-sizing: border-box;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+  display: none;
+  margin-top: 12px;
+  background-color: #edf2f7;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .snippet-edit {
-    display: none;
-    margin-top: 12px;
-    background-color: #edf2f7;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #e0e0e0;
-    width: 100%;
-    max-width: 700px;
-    box-sizing: border-box;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    resize: vertical, horizontal;
-    max-height: 300px;
-    overflow: auto;
-    min-height: 100px;
-    min-width: 125px;
+  display: none;
+  margin-top: 12px;
+  background-color: #edf2f7;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  width: 100%;
+  max-width: 700px;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  resize: vertical, horizontal;
+  max-height: 300px;
+  overflow: auto;
+  min-height: 100px;
+  min-width: 125px;
 }
 
 .snippet-content pre {
-    white-space: pre-wrap;
-    word-break: break-word;
-    margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
 }
 
-.active .snippet-content,
-.active .snippet-edit {
-    display: block;
+.expanded .snippet-content,
+.expanded .snippet-edit {
+  display: block;
 }
 
 .copy-popup, .reading-popup {
-    position: absolute;
-    width: 50px;
-    left: 0;
-    transform: translateY(5px);
-    background-color: #2d3748;
-    color: #ffffff;
-    padding: 8px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
+  position: absolute;
+  width: 50px;
+  left: 0;
+  transform: translateY(5px);
+  background-color: #2d3748;
+  color: #ffffff;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
 }
 
 #snippet-input {
-    width: 250px;
-    max-width: 600px;
-    min-width: 175px;
-    height: 100px;
-    min-height: 100px;
-    max-height: 300px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
-    color: #2d2d2d;
-    background-color: #ffffff;
+  width: 250px;
+  max-width: 600px;
+  min-width: 175px;
+  height: 100px;
+  min-height: 100px;
+  max-height: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: #2d2d2d;
+  background-color: #ffffff;
+}
+
+/* Add these new styles to your existing popup.css */
+
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 16px;
+  color: #666;
+  position: relative;
+}
+
+.tab.active {
+  color: #2b6cb0;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #2b6cb0;
+}
+
+.content-section {
+  display: none;
+}
+
+.content-section.active {
+  display: block;
+}
+
+#screenshot-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.screenshot-item {
+  position: relative;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.screenshot-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.screenshot-thumbnail {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.screenshot-actions {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: flex;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.screenshot-title {
+  padding: 8px;
+  font-size: 14px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#capture-screenshot {
+  background-color: #2b6cb0;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  transition: background-color 0.2s ease;
+}
+
+#capture-screenshot:hover {
+  background-color: #2c5282;
+}
+
+#icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
 }
