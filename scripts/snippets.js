@@ -1,4 +1,3 @@
-// snippets.js - Snippet-related functionality
 function addSnippetToDOM(title, text) {
     const li = document.createElement('li');
     const headerContainer = document.createElement('div');

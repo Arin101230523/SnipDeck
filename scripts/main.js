@@ -1,9 +1,6 @@
-// main.js - Main initialization
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize tabs
-    initializeTabs();
     
-    // Initialize event listeners
+    initializeTabs();
     initializeEventListeners();
     
     // Load selected text if available

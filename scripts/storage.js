@@ -1,4 +1,3 @@
-// storage.js - Chrome storage related functions
 function saveToStorage(key, data) {
     chrome.storage.local.set({ [key]: data });
 }
