@@ -68,6 +68,17 @@ li:hover {
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
+.scopy-button {
+  background-color: #e0e7ff;
+  border: 1px solid #a0aec0;
+  cursor: pointer;
+  padding: 6px 10px;
+  font-size: 14px;
+  color: #2d3748;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
 .copy-button i,
 .delete-button i, .microphone-button i {
   color: #2d3748;

@@ -60,7 +60,7 @@ function addScreenshotToDOM(title, thumbnailUrl, originalUrl) {
     actions.className = 'screenshot-actions';
     
     const copyButton = document.createElement('button');
-    copyButton.className = 'copy-button';
+    copyButton.className = 'scopy-button';
     copyButton.innerHTML = '<i class="fas fa-copy"></i>';
     copyButton.addEventListener('click', (e) => {
         e.stopPropagation();
