@@ -21,10 +21,41 @@ function addScreenshotToDOM(title, thumbnailUrl, originalUrl) {
     img.src = thumbnailUrl;
     img.alt = title;
     
+    // Create a div for title with an event listener for click to become editable
     const titleElem = document.createElement('div');
     titleElem.className = 'screenshot-title';
     titleElem.textContent = title;
     
+    // When the title is clicked, turn it into an editable input field
+    titleElem.addEventListener('click', () => {
+        const input = document.createElement('input');
+        input.className = 'screenshot-title-input';
+        input.value = titleElem.textContent;
+        
+        // Replace the title text with input field
+        titleElem.replaceWith(input);
+        
+        // Focus on the input for immediate editing
+        input.focus();
+        
+        // Save the new title when the input field loses focus or Enter is pressed
+        input.addEventListener('blur', () => {
+            const newTitle = input.value.trim();
+            if (newTitle && newTitle !== titleElem.textContent) {
+                updateScreenshotTitle(titleElem.textContent, originalUrl, newTitle);
+            }
+            // Replace input with updated static title
+            input.replaceWith(titleElem);
+            titleElem.textContent = newTitle;
+        });
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                input.blur(); // Trigger blur when Enter is pressed
+            }
+        });
+    });
+
     const actions = document.createElement('div');
     actions.className = 'screenshot-actions';
     
@@ -54,7 +85,7 @@ function addScreenshotToDOM(title, thumbnailUrl, originalUrl) {
     actions.appendChild(deleteButton);
     
     li.appendChild(img);
-    li.appendChild(titleElem);
+    li.appendChild(titleElem); // Append the title div initially
     li.appendChild(actions);
     
     img.addEventListener('click', () => {
@@ -67,6 +98,17 @@ function addScreenshotToDOM(title, thumbnailUrl, originalUrl) {
     });
     
     document.querySelector('#screenshot-list').appendChild(li);
+}
+
+function updateScreenshotTitle(oldTitle, originalUrl, newTitle) {
+    getFromStorage('screenshots', screenshots => {
+        screenshots = screenshots || [];
+        const screenshot = screenshots.find(s => s.title === oldTitle && s.dataUrl === originalUrl);
+        if (screenshot) {
+            screenshot.title = newTitle;
+            saveToStorage('screenshots', screenshots);
+        }
+    });
 }
 
 async function copyImageToClipboard(dataUrl) {
