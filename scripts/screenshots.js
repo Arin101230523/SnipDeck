@@ -113,7 +113,19 @@ function updateScreenshotTitle(oldTitle, originalUrl, newTitle) {
 
 async function copyImageToClipboard(dataUrl) {
     try {
-        const response = await fetch(dataUrl);
+        const img = new Image();
+        img.src = dataUrl;
+        await new Promise(resolve => img.onload = resolve);
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        const pngDataUrl = canvas.toDataURL('image/png');
+
+        const response = await fetch(pngDataUrl);
         const blob = await response.blob();
         const clipboardItem = new ClipboardItem({
             'image/png': blob

@@ -41,6 +41,13 @@ function initializeEventListeners() {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 
+                // Convert original image to WebP
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+                const originalWebPDataUrl = canvas.toDataURL('image/webp', 0.8);
+
+                // Create thumbnail
                 const aspectRatio = img.width / img.height;
                 const thumbWidth = 300;
                 const thumbHeight = thumbWidth / aspectRatio;
@@ -50,12 +57,12 @@ function initializeEventListeners() {
                 
                 ctx.drawImage(img, 0, 0, thumbWidth, thumbHeight);
                 
-                const thumbnailDataUrl = canvas.toDataURL('image/png', 0.8);
+                const thumbnailDataUrl = canvas.toDataURL('image/webp', 0.8);
                 
                 const title = `Screenshot ${new Date().toLocaleString()}`;
                 
                 saveScreenshot(title, {
-                    original: dataUrl,
+                    original: originalWebPDataUrl,
                     thumbnail: thumbnailDataUrl
                 });
             });
